@@ -1,0 +1,39 @@
+[
+  {
+    "id": 2001,
+    "name": null,
+    "slug": null,
+    "status": "running",
+    "tournament_id": 501,
+    "serie_id": 301,
+    "league_id": null,
+    "begin_at": null,
+    "end_at": null,
+    "modified_at": null,
+    "winner_id": null,
+    "winner": null,
+    "games": [],
+    "opponents": [
+      { "type": "Player", "opponent": { "id": 8001, "name": "Clem", "slug": null, "image_url": null, "acronym": null, "location": null, "active": null, "role": null, "modified_at": null, "birthday": null, "first_name": null, "last_name": null, "nationality": "FR", "age": null } },
+      { "type": "Player", "opponent": { "id": 8002, "name": "Reynor", "slug": null, "image_url": null, "acronym": null, "location": null, "active": null, "role": null, "modified_at": null, "birthday": null, "first_name": null, "last_name": null, "nationality": "IT", "age": null } }
+    ],
+    "results": [],
+    "live": { "supported": true, "opens_at": null, "url": null },
+    "streams_list": [
+      { "language": "en", "main": true, "official": false, "raw_url": null, "embed_url": null }
+    ]
+  },
+  {
+    "id": 2002,
+    "name": null,
+    "slug": "lone-match",
+    "status": "not_started",
+    "tournament_id": 502,
+    "serie_id": 302,
+    "begin_at": null,
+    "end_at": null,
+    "games": [],
+    "opponents": [],
+    "results": []
+  }
+]

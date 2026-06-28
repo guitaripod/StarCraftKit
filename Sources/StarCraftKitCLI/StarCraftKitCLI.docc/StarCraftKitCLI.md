@@ -1,26 +1,31 @@
 # ``StarCraftKitCLI``
 
-A powerful command-line interface for accessing StarCraft II esports data.
+A command-line interface for accessing StarCraft II esports data.
 
 ## Overview
 
-StarCraftKitCLI provides a comprehensive set of commands to interact with StarCraft II esports data from your terminal. Track live matches, explore player statistics, browse tournaments, and more - all from the command line.
+`StarCraftKitCLI` provides a set of commands to interact with StarCraft II esports
+data from your terminal. Track live matches, explore players, browse tournaments and
+series, search across entities, export data, and open match streams — all from the
+command line. The tool is built on top of ``StarCraftKit`` and the PandaScore API.
+
+The executable command is `starcraft`.
 
 ## Installation
 
 ### Using Swift Package Manager
 
 ```bash
-git clone https://github.com/yourusername/StarCraftKit.git
+git clone https://github.com/guitaripod/StarCraftKit.git
 cd StarCraftKit
 swift build -c release
-sudo cp .build/release/starcraft-cli /usr/local/bin/
+sudo cp .build/release/starcraft-cli /usr/local/bin/starcraft
 ```
 
-### Using Homebrew (if available)
+Or run it directly from the package without installing:
 
 ```bash
-brew install starcraft-cli
+swift run starcraft <command>
 ```
 
 ## Configuration
@@ -40,36 +45,71 @@ echo 'export PANDA_TOKEN="your-api-token"' >> ~/.zshrc
 ## Quick Start
 
 ```bash
-# Check live matches
-starcraft-cli live
+# Currently running matches
+starcraft live
 
 # Today's matches
-starcraft-cli today
+starcraft today
 
-# Search for a player
-starcraft-cli search player Serral
+# Search for a player (or team/tournament)
+starcraft search Serral
+starcraft search Dragon --type team
 
-# Get upcoming matches
-starcraft-cli upcoming --days 7
+# Upcoming matches
+starcraft upcoming
+
+# Find when a player plays next
+starcraft player-schedule Serral
+```
+
+## Commands
+
+### Live Tracking
+- `live` — currently running matches
+- `today` — today's match schedule
+- `upcoming` — future matches
+
+### Players
+- `players` — list players
+- `player-schedule` — a specific player's upcoming matches
+- `player-matches` — a player's match history
+
+### Tournaments, Series & Leagues
+- `tournaments` — browse tournaments
+- `tournament-matches` — a tournament's matches
+- `series` — tournament series
+- `leagues` — leagues
+
+### Matches & Teams
+- `matches` — list matches
+- `teams` — list teams
+
+### Search, Export & Streams
+- `search` — universal search across players, teams, and tournaments (`--type`)
+- `export` — export data
+- `stream` — list and open the Twitch/YouTube streams attached to live matches
+
+### Utilities
+- `cache` — cache statistics and management (e.g. `cache stats`)
+- `test` — exercise the API endpoints
+- `debug` — diagnostics
+
+> The `stream` command simply opens the Twitch/YouTube URLs that PandaScore embeds in
+> match data. There is no live WebSocket streaming.
+
+Use `--help` with any command to see all of its options:
+
+```bash
+starcraft --help
+starcraft live --help
 ```
 
 ## Topics
 
-### Getting Started
-- <doc:CLIQuickStart>
-- <doc:CLIConfiguration>
-
-### Core Commands
-- <doc:LiveTracking>
-- <doc:PlayerCommands>
-- <doc:TournamentCommands>
-- <doc:DataCommands>
-
-### Advanced Features
-- <doc:Filtering>
-- <doc:Exporting>
-- <doc:Caching>
-
-### Reference
-- ``StarCraftCLI``
-- <doc:AllCommands>
+### Subcommands
+- ``LiveCommand``
+- ``TodayCommand``
+- ``UpcomingCommand``
+- ``PlayersCommand``
+- ``PlayerScheduleCommand``
+- ``SearchCommand``

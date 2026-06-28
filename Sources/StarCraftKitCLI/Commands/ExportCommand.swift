@@ -67,11 +67,11 @@ struct ExportCommand: AsyncParsableCommand {
     
     private func exportMatches(client: StarCraftClient, format: ExportFormat, to path: String) async throws {
         var allMatches: [Match] = []
-        var filters: [String: String] = [:]
-        
+        var filters: [String: QueryValue] = [:]
+
         // Apply filters
         if let since = since {
-            filters["modified_at"] = since
+            filters["modified_at"] = .string(since)
         }
         
         // Fetch matches

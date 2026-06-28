@@ -39,8 +39,8 @@ public struct Series: Codable, Sendable, Identifiable {
     public let winnerType: String?
     
     /// Last modification timestamp
-    public let modifiedAt: Date
-    
+    public let modifiedAt: Date?
+
     /// Description of the series
     public let description: String?
     
@@ -63,6 +63,33 @@ public struct Series: Codable, Sendable, Identifiable {
         case modifiedAt = "modified_at"
         case description
         case tier
+    }
+}
+
+// MARK: - Defensive Decoding
+public extension Series {
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        let id = try c.decode(Int.self, forKey: .id)
+        let rawName = try? c.decodeIfPresent(String.self, forKey: .name)
+        let rawSlug = try? c.decodeIfPresent(String.self, forKey: .slug)
+        let rawFull = try? c.decodeIfPresent(String.self, forKey: .fullName)
+        let resolvedName = rawName ?? rawFull ?? "Series \(id)"
+        self.id = id
+        self.name = resolvedName
+        self.slug = rawSlug ?? "series-\(id)"
+        self.fullName = rawFull ?? resolvedName
+        self.beginAt = try? c.decodeIfPresent(Date.self, forKey: .beginAt)
+        self.endAt = try? c.decodeIfPresent(Date.self, forKey: .endAt)
+        self.leagueID = (try? c.decodeIfPresent(Int.self, forKey: .leagueID)) ?? 0
+        self.tournaments = try? c.decodeIfPresent([Tournament].self, forKey: .tournaments)
+        self.year = try? c.decodeIfPresent(Int.self, forKey: .year)
+        self.season = try? c.decodeIfPresent(String.self, forKey: .season)
+        self.winnerID = try? c.decodeIfPresent(Int.self, forKey: .winnerID)
+        self.winnerType = try? c.decodeIfPresent(String.self, forKey: .winnerType)
+        self.modifiedAt = try? c.decodeIfPresent(Date.self, forKey: .modifiedAt)
+        self.description = try? c.decodeIfPresent(String.self, forKey: .description)
+        self.tier = try? c.decodeIfPresent(String.self, forKey: .tier)
     }
 }
 

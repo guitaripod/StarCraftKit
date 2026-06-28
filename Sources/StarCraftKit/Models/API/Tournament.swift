@@ -24,29 +24,38 @@ public struct Tournament: Codable, Sendable, Identifiable {
     public let leagueID: Int
     
     /// Whether live data is available
-    public let liveSupported: Bool
-    
+    public let liveSupported: Bool?
+
     /// Total prize pool
     public let prizepool: String?
-    
+
     /// Participating teams
     public let teams: [Team]?
-    
+
     /// Winner of the tournament
     public let winnerID: Int?
-    
+
     /// Winner type (player or team)
     public let winnerType: String?
-    
+
     /// Last modification timestamp
-    public let modifiedAt: Date
-    
+    public let modifiedAt: Date?
+
     /// Tier level
     public let tier: String?
-    
+
+    /// Whether detailed per-match stats are available
+    public let detailedStats: Bool?
+
+    /// Country code the tournament is hosted in, when applicable
+    public let country: String?
+
+    /// Region the tournament belongs to, when applicable
+    public let region: String?
+
     /// Has bracket
-    public let hasBracket: Bool
-    
+    public let hasBracket: Bool?
+
     private enum CodingKeys: String, CodingKey {
         case id
         case name
@@ -62,7 +71,36 @@ public struct Tournament: Codable, Sendable, Identifiable {
         case winnerType = "winner_type"
         case modifiedAt = "modified_at"
         case tier
+        case detailedStats = "detailed_stats"
+        case country
+        case region
         case hasBracket = "has_bracket"
+    }
+}
+
+// MARK: - Defensive Decoding
+public extension Tournament {
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        let id = try c.decode(Int.self, forKey: .id)
+        self.id = id
+        self.name = (try? c.decodeIfPresent(String.self, forKey: .name)) ?? "Tournament \(id)"
+        self.slug = (try? c.decodeIfPresent(String.self, forKey: .slug)) ?? "tournament-\(id)"
+        self.beginAt = try? c.decodeIfPresent(Date.self, forKey: .beginAt)
+        self.endAt = try? c.decodeIfPresent(Date.self, forKey: .endAt)
+        self.serieID = (try? c.decodeIfPresent(Int.self, forKey: .serieID)) ?? 0
+        self.leagueID = (try? c.decodeIfPresent(Int.self, forKey: .leagueID)) ?? 0
+        self.liveSupported = try? c.decodeIfPresent(Bool.self, forKey: .liveSupported)
+        self.prizepool = try? c.decodeIfPresent(String.self, forKey: .prizepool)
+        self.teams = try? c.decodeIfPresent([Team].self, forKey: .teams)
+        self.winnerID = try? c.decodeIfPresent(Int.self, forKey: .winnerID)
+        self.winnerType = try? c.decodeIfPresent(String.self, forKey: .winnerType)
+        self.modifiedAt = try? c.decodeIfPresent(Date.self, forKey: .modifiedAt)
+        self.tier = try? c.decodeIfPresent(String.self, forKey: .tier)
+        self.detailedStats = try? c.decodeIfPresent(Bool.self, forKey: .detailedStats)
+        self.country = try? c.decodeIfPresent(String.self, forKey: .country)
+        self.region = try? c.decodeIfPresent(String.self, forKey: .region)
+        self.hasBracket = try? c.decodeIfPresent(Bool.self, forKey: .hasBracket)
     }
 }
 

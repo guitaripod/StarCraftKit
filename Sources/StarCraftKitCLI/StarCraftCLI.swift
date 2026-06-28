@@ -117,17 +117,23 @@ struct StarCraftCLI: AsyncParsableCommand {
             
             // Search
             SearchCommand.self,
-            
+
+            // Ratings & predictions (Aligulac)
+            RatingCommand.self,
+            RatingsCommand.self,
+            HeadToHeadCommand.self,
+            PredictCommand.self,
+
             // Core entities
             MatchesCommand.self,
             TeamsCommand.self,
             SeriesCommand.self,
             LeaguesCommand.self,
-            
+
             // Export & Streaming
             ExportCommand.self,
             StreamCommand.self,
-            
+
             // Utilities
             CacheCommand.self,
             TestCommand.self,
@@ -160,7 +166,7 @@ extension League: OutputFormattable {
         League: \(name)
         ID: \(id)
         Slug: \(slug)
-        Modified: \(modifiedAt.formattedString)
+        Modified: \(modifiedAt?.formattedString ?? "—")
         """
     }
 }

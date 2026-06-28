@@ -27,6 +27,15 @@ struct DebugCommand: AsyncParsableCommand {
             if let match = matches.first {
                 print("Match ID: \(match.id)")
                 print("Name: \(match.name)")
+                print("Status: \(match.status.rawValue)")
+                print("Best of: \(match.numberOfGames)")
+                if let matchType = match.matchType { print("Match type: \(matchType)") }
+                if let league = match.league { print("League: \(league.name)") }
+                if let serie = match.serie { print("Serie: \(serie.fullName)") }
+                if let tournament = match.tournament { print("Tournament: \(tournament.name)") }
+                if let videogame = match.videogame { print("Videogame: \(videogame.name)") }
+                if let forfeit = match.forfeit { print("Forfeit: \(forfeit)") }
+                if let detailedStats = match.detailedStats { print("Detailed stats: \(detailedStats)") }
                 print("Opponents count: \(match.opponents.count)")
                 
                 for (index, opponent) in match.opponents.enumerated() {
@@ -34,7 +43,7 @@ struct DebugCommand: AsyncParsableCommand {
                     print("  Type: \(opponent.type)")
                     print("  ID: \(opponent.opponent.id)")
                     print("  Name: \(opponent.opponent.name)")
-                    print("  Slug: \(opponent.opponent.slug)")
+                    print("  Slug: \(opponent.opponent.slug ?? "—")")
                     
                     if let nationality = opponent.opponent.nationality {
                         print("  Nationality: \(nationality)")

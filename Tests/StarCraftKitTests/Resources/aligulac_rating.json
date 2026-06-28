@@ -1,0 +1,23 @@
+{
+  "meta": {
+    "limit": 1,
+    "offset": 0,
+    "total_count": 1,
+    "next": null,
+    "previous": null
+  },
+  "objects": [
+    {
+      "id": 9876543,
+      "player": "/api/v1/player/485/",
+      "period": "/api/v1/period/300/",
+      "rating": 1.85,
+      "rating_vp": 1.92,
+      "rating_vt": 1.74,
+      "rating_vz": 1.66,
+      "dev": 0.31,
+      "position": 1,
+      "decay": 0
+    }
+  ]
+}

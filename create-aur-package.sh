@@ -26,8 +26,8 @@ cp ~/Dev/swift/StarCraftKit/aur/starcraft-cli/PKGBUILD .
 cp ~/Dev/swift/StarCraftKit/aur/starcraft-cli/.SRCINFO .
 
 # Configure git
-git config user.name "Marcus Ziade"
-git config user.email "marcusziade@me.com"
+git config user.name "guitaripod"
+git config user.email "guitaripod@gmail.com"
 
 # Add files and commit
 git add PKGBUILD .SRCINFO

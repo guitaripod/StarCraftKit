@@ -58,7 +58,7 @@ public typealias StarCraftAPI = StarCraftClient
 @_exported import struct Foundation.TimeInterval
 
 // Version information
-public struct StarCraftKitInfo {
-    public static let version = "1.0.0"
-    public static let minimumSwiftVersion = "5.9"
+public enum StarCraftKitInfo {
+    public static let version = "2.0.0"
+    public static let minimumSwiftVersion = "6.0"
 }

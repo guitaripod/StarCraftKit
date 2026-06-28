@@ -21,6 +21,19 @@ StarCraftKit uses token-based authentication with the PandaScore API. You'll nee
 let client = StarCraftClient(apiToken: "your-api-token")
 ```
 
+### Choosing an Authentication Method
+
+By default the token is sent as a Bearer token in the `Authorization` header. You can
+instead send it as a `token` query parameter:
+
+```swift
+let config = StarCraftClient.Configuration(
+    apiKey: "your-api-token",
+    authMethod: .queryParameter // or .bearerToken (default)
+)
+let client = StarCraftClient(configuration: config)
+```
+
 ### Using Environment Variables (Recommended)
 
 Store your token securely in environment variables:
@@ -66,7 +79,7 @@ let client = StarCraftClient(apiToken: config.apiToken)
 
 ## Token Validation
 
-StarCraftKit automatically validates your token on the first request. If invalid, you'll receive an ``APIError/unauthorized`` error:
+StarCraftKit automatically validates your token on the first request. If invalid, you'll receive an ``APIError/unauthorized(message:)`` error:
 
 ```swift
 do {
@@ -82,8 +95,26 @@ do {
 
 PandaScore enforces rate limits on API tokens. StarCraftKit handles rate limiting automatically with:
 
-- Automatic retry with exponential backoff
-- Rate limit headers parsing
+- Automatic retry with exponential backoff and jitter
+- Rate limit header parsing
 - Configurable retry behavior
 
-See <doc:RetryLogic> for more details on customizing retry behavior.
+You can inspect the current rate-limit status at any time:
+
+```swift
+let (remaining, resetTime) = await client.getRateLimitStatus()
+print("Requests remaining: \(remaining ?? -1)")
+```
+
+> PandaScore does not send a rate-limit reset header, so `resetTime` is reported as the
+> top of the next hour (PandaScore's rate-limit window).
+
+Customize retry behavior through the client configuration:
+
+```swift
+let config = StarCraftClient.Configuration(
+    apiKey: "your-token",
+    retryConfiguration: .aggressive // .default / .aggressive / .conservative
+)
+let client = StarCraftClient(configuration: config)
+```

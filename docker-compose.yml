@@ -11,7 +11,7 @@ services:
     command: ["starcraft-cli", "test"]
     
   dev:
-    image: swift:5.9
+    image: swift:6.1
     working_dir: /app
     volumes:
       - .:/app
@@ -21,7 +21,7 @@ services:
     command: swift build
     
   test:
-    image: swift:5.9
+    image: swift:6.1
     working_dir: /app
     volumes:
       - .:/app

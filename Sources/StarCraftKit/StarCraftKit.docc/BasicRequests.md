@@ -6,17 +6,28 @@ Learn how to fetch different types of StarCraft II esports data using StarCraftK
 
 StarCraftKit provides simple, intuitive methods for fetching various types of esports data. All requests are asynchronous and use Swift's async/await pattern.
 
+Each resource follows the same naming convention:
+
+- `getPlayers(_:)` — the first page of results
+- `getAllPlayers()` — every page, fetched automatically
+- `getPlayer(id:)` — a single resource by id
+
 ## Fetching Matches
 
 ### Live Matches
 
-Get currently live matches:
+Get currently running matches:
 
 ```swift
 let liveMatches = try await client.getLiveMatches()
 for match in liveMatches {
-    print("\(match.name) - \(match.tournament.name)")
-    print("Score: \(match.results?.first?.score ?? 0) - \(match.results?.last?.score ?? 0)")
+    print(match.name)
+    if let tournament = match.tournament {
+        print("  Tournament: \(tournament.name)")
+    }
+    if let first = match.results.first, let last = match.results.last {
+        print("  Score: \(first.score) - \(last.score)")
+    }
 }
 ```
 
@@ -28,7 +39,9 @@ Fetch matches scheduled for the future:
 let upcomingMatches = try await client.getUpcomingMatches()
 print("Next \(upcomingMatches.count) matches:")
 for match in upcomingMatches {
-    print("\(match.name) starts at \(match.scheduledAt)")
+    if let beginAt = match.beginAt {
+        print("\(match.name) starts at \(beginAt)")
+    }
 }
 ```
 
@@ -40,21 +53,23 @@ Get recently completed matches:
 let pastMatches = try await client.getPastMatches()
 for match in pastMatches {
     if let winner = match.winner {
-        print("\(match.name): \(winner.name) won")
+        print("\(match.name): \(winner.name ?? "Unknown") won")
     }
 }
 ```
 
-### All Matches with Filtering
+### A Single Match
 
 ```swift
-// Get matches for a specific date range
-let startDate = Date().addingTimeInterval(-7 * 24 * 60 * 60) // 7 days ago
-let endDate = Date()
+let match = try await client.getMatch(id: 11111)
+```
 
+### Filtering Matches
+
+```swift
 let parameters = QueryParameters()
-    .range(field: "scheduled_at", from: startDate, to: endDate)
-    .sort(by: "scheduled_at", order: .descending)
+    .filter("status", "finished")
+    .sort("end_at", .descending)
     .perPage(50)
 
 let matches = try await client.getMatches(parameters: parameters)
@@ -74,25 +89,27 @@ for player in players {
 ### Search for Players
 
 ```swift
-let parameters = QueryParameters()
-    .search("Serral")
-    .perPage(10)
+// Convenience helper
+let results = try await client.searchPlayers(name: "Serral")
 
-let searchResults = try await client.getPlayers(parameters: parameters)
+// Or build the query yourself
+let parameters = QueryParameters()
+    .search("name", "Serral")
+    .perPage(10)
+let searchResults = try await client.getPlayers(PlayersRequest(parameters: parameters))
 ```
 
 ### Player Details
 
 ```swift
-let playerId = 12345
-let player = try await client.getPlayer(id: playerId)
+let player = try await client.getPlayer(id: 12345)
 print("Player: \(player.name)")
 print("Team: \(player.currentTeam?.name ?? "No team")")
 ```
 
 ## Fetching Teams
 
-### Active Teams
+### Teams
 
 ```swift
 let teams = try await client.getTeams()
@@ -101,34 +118,44 @@ for team in teams {
 }
 ```
 
+### Search for Teams
+
+```swift
+let dragons = try await client.searchTeams(name: "Dragon")
+```
+
 ### Team Details
 
 ```swift
-let teamId = 67890
-let team = try await client.getTeam(id: teamId)
+let team = try await client.getTeam(id: 67890)
 print("Team: \(team.name)")
 print("Players: \(team.players?.count ?? 0)")
 ```
 
 ## Fetching Tournaments
 
-### Current Tournaments
+### Tournaments
 
 ```swift
 let tournaments = try await client.getTournaments()
 for tournament in tournaments {
-    print("\(tournament.name) - \(tournament.serie.fullName)")
+    print(tournament.name)
     if let prizePool = tournament.prizepool {
-        print("Prize Pool: $\(prizePool)")
+        print("  Prize Pool: \(prizePool)")
     }
 }
+```
+
+### A Single Tournament
+
+```swift
+let tournament = try await client.getTournament(id: 222)
 ```
 
 ### Tournament Matches
 
 ```swift
-let tournamentId = 11111
-let matches = try await client.getTournamentMatches(tournamentId: tournamentId)
+let matches = try await client.getTournamentMatches(tournamentId: 11111)
 print("Tournament has \(matches.count) matches")
 ```
 
@@ -137,8 +164,10 @@ print("Tournament has \(matches.count) matches")
 ```swift
 let leagues = try await client.getLeagues()
 for league in leagues {
-    print("\(league.name) - \(league.url ?? "No URL")")
+    print("\(league.name) - \(league.slug)")
 }
+
+let league = try await client.getLeague(id: 333)
 ```
 
 ## Fetching Series
@@ -152,13 +181,23 @@ for serie in series {
 }
 ```
 
-### Running Series
+### A Single Series
 
 ```swift
-let parameters = QueryParameters()
-    .filter(by: "running", value: true)
+let oneSeries = try await client.getSeries(id: 444)
+```
 
-let runningSeries = try await client.getSeries(parameters: parameters)
+## Fetching Everything
+
+To page through every result automatically, use the `getAll*` accessors:
+
+```swift
+let allPlayers = try await client.getAllPlayers()
+let allTeams = try await client.getAllTeams()
+let allTournaments = try await client.getAllTournaments()
+let allSeries = try await client.getAllSeries()
+let allLeagues = try await client.getAllLeagues()
+let allMatches = try await client.getAllMatches()
 ```
 
 ## Error Handling
@@ -169,10 +208,10 @@ Always handle potential errors when making requests:
 do {
     let matches = try await client.getLiveMatches()
     // Process matches
-} catch APIError.rateLimitExceeded(let retryAfter) {
-    print("Rate limit exceeded. Retry after \(retryAfter) seconds")
-} catch APIError.notFound {
-    print("Resource not found")
+} catch APIError.rateLimitExceeded(let retryAfter, _) {
+    print("Rate limit exceeded. Retry after \(retryAfter ?? 60) seconds")
+} catch APIError.notFound(let resource) {
+    print("Resource not found: \(resource)")
 } catch {
     print("Unexpected error: \(error)")
 }
@@ -180,6 +219,5 @@ do {
 
 ## Next Steps
 
-- Learn about <doc:QueryingData> for advanced filtering
-- Explore <doc:Pagination> for handling large datasets
-- Understand <doc:Caching> to optimize performance
+- Learn about <doc:QueryingData> for advanced filtering, sorting, and pagination
+- Understand <doc:ErrorHandling> for robust applications

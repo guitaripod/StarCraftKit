@@ -1,5 +1,5 @@
 # Build stage
-FROM swift:5.9 AS builder
+FROM swift:6.1 AS builder
 
 WORKDIR /app
 
@@ -15,7 +15,7 @@ RUN swift build -c release
 RUN swift test
 
 # Runtime stage
-FROM swift:5.9-slim
+FROM swift:6.1-slim
 
 WORKDIR /app
 

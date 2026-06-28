@@ -1,0 +1,46 @@
+[
+  {
+    "id": 1001,
+    "name": "Serral vs Maru",
+    "slug": "serral-vs-maru",
+    "status": "finished",
+    "tournament_id": 500,
+    "serie_id": 300,
+    "league_id": 200,
+    "begin_at": "2026-01-15T18:00:00Z",
+    "end_at": "2026-01-15T19:30:00Z",
+    "number_of_games": 5,
+    "match_type": "best_of",
+    "detailed_stats": true,
+    "forfeit": false,
+    "draw": false,
+    "rescheduled": false,
+    "modified_at": "2026-01-15T19:31:00Z",
+    "winner_id": 7001,
+    "winner": {
+      "id": 7001,
+      "type": "Player",
+      "name": "Serral",
+      "slug": "serral",
+      "acronym": null,
+      "image_url": "https://cdn.pandascore.co/images/player/image/7001/serral.png"
+    },
+    "games": [
+      { "id": 1, "begin_at": "2026-01-15T18:00:00Z", "end_at": "2026-01-15T18:20:00Z", "complete": true, "finished": true, "forfeit": false, "length": 1200, "position": 1, "status": "finished", "winner": { "id": 7001, "type": "Player" }, "winner_type": "Player" },
+      { "id": 2, "begin_at": "2026-01-15T18:25:00Z", "end_at": "2026-01-15T18:45:00Z", "complete": true, "finished": true, "forfeit": false, "length": 1200, "position": 2, "status": "finished", "winner": { "id": 7002, "type": "Player" }, "winner_type": "Player" },
+      { "id": 3, "begin_at": "2026-01-15T18:50:00Z", "end_at": "2026-01-15T19:10:00Z", "complete": true, "finished": true, "forfeit": false, "length": 1200, "position": 3, "status": "finished", "winner": { "id": 7001, "type": "Player" }, "winner_type": "Player" }
+    ],
+    "opponents": [
+      { "type": "Player", "opponent": { "id": 7001, "name": "Serral", "slug": "serral", "image_url": "https://cdn.pandascore.co/serral.png", "acronym": null, "location": "FI", "active": true, "role": null, "modified_at": "2026-01-01T00:00:00Z", "birthday": "1998-01-19", "first_name": "Joona", "last_name": "Sotala", "nationality": "FI", "age": 28 } },
+      { "type": "Player", "opponent": { "id": 7002, "name": "Maru", "slug": "maru", "image_url": "https://cdn.pandascore.co/maru.png", "acronym": null, "location": "KR", "active": true, "role": null, "modified_at": "2026-01-01T00:00:00Z", "birthday": "1997-12-19", "first_name": "Sung Joo", "last_name": "Cho", "nationality": "KR", "age": 28 } }
+    ],
+    "results": [
+      { "score": 3, "player_id": 7001, "team_id": null },
+      { "score": 1, "player_id": 7002, "team_id": null }
+    ],
+    "live": { "supported": false, "opens_at": null, "url": null },
+    "streams_list": [
+      { "language": "en", "main": true, "official": true, "raw_url": "https://twitch.tv/example", "embed_url": "https://player.twitch.tv/?channel=example" }
+    ]
+  }
+]

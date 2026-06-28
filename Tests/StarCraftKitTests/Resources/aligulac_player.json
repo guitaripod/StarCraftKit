@@ -1,0 +1,20 @@
+{
+  "meta": {
+    "limit": 20,
+    "offset": 0,
+    "total_count": 1,
+    "next": null,
+    "previous": null
+  },
+  "objects": [
+    {
+      "id": 485,
+      "tag": "Serral",
+      "name": "Joona Sotala",
+      "country": "FI",
+      "race": "Z",
+      "birthday": "1998-01-19",
+      "current_rating": "/api/v1/rating/1234567/"
+    }
+  ]
+}

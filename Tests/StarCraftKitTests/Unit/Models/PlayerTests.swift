@@ -16,7 +16,8 @@ final class PlayerTests: XCTestCase {
             currentVideogame: nil,
             age: nil,
             birthday: nil,
-            hometown: nil
+            hometown: nil,
+            active: nil
         )
         
         XCTAssertEqual(playerWithFullName.fullName, "Joona Sotala")
@@ -35,7 +36,8 @@ final class PlayerTests: XCTestCase {
             currentVideogame: nil,
             age: nil,
             birthday: nil,
-            hometown: nil
+            hometown: nil,
+            active: nil
         )
         
         XCTAssertNil(playerWithoutFullName.fullName)
@@ -68,7 +70,8 @@ final class PlayerTests: XCTestCase {
             currentVideogame: nil,
             age: nil,
             birthday: nil,
-            hometown: nil
+            hometown: nil,
+            active: nil
         )
         
         XCTAssertTrue(playerWithTeam.hasTeam)
@@ -86,7 +89,8 @@ final class PlayerTests: XCTestCase {
             currentVideogame: nil,
             age: nil,
             birthday: nil,
-            hometown: nil
+            hometown: nil,
+            active: nil
         )
         
         XCTAssertFalse(playerWithoutTeam.hasTeam)
@@ -106,7 +110,8 @@ final class PlayerTests: XCTestCase {
             currentVideogame: nil,
             age: nil,
             birthday: nil,
-            hometown: nil
+            hometown: nil,
+            active: nil
         )
         
         let player2 = Player(
@@ -122,7 +127,8 @@ final class PlayerTests: XCTestCase {
             currentVideogame: nil,
             age: nil,
             birthday: nil,
-            hometown: nil
+            hometown: nil,
+            active: nil
         )
         
         let player3 = Player(
@@ -138,7 +144,8 @@ final class PlayerTests: XCTestCase {
             currentVideogame: nil,
             age: nil,
             birthday: nil,
-            hometown: nil
+            hometown: nil,
+            active: nil
         )
         
         XCTAssertEqual(player1, player2) // Same ID

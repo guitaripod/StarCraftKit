@@ -111,9 +111,9 @@ struct LiveCommand: AsyncParsableCommand {
             // Handle stream opening
             if let streamIndex = openStream {
                 if let matchWithStream = allMatchesWithStreams.first(where: { $0.index == streamIndex }),
-                   let stream = matchWithStream.stream {
+                   let stream = matchWithStream.stream, let rawURL = stream.rawURL {
                     print("\n🚀 Opening stream for: \(matchWithStream.match.name)".green)
-                    try openStreamURL(stream.rawURL.absoluteString)
+                    try openStreamURL(rawURL.absoluteString)
                 } else {
                     print("\n❌ No stream available for match #\(streamIndex)".red)
                 }
@@ -189,9 +189,9 @@ struct LiveCommand: AsyncParsableCommand {
             print("     Progress: \(progressBar) \(gamesPlayed)/\(match.numberOfGames)".gray)
         }
         
-        // Show stream URL if available  
-        if let stream = match.streams?.first {
-            print("     Stream: \(stream.rawURL.absoluteString)".gray)
+        // Show stream URL if available
+        if let stream = match.streams?.first, let rawURL = stream.rawURL {
+            print("     Stream: \(rawURL.absoluteString)".gray)
         }
     }
     

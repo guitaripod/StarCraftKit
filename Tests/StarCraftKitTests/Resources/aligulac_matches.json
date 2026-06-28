@@ -1,0 +1,44 @@
+{
+  "meta": {
+    "limit": 20,
+    "offset": 0,
+    "total_count": 3,
+    "next": null,
+    "previous": null
+  },
+  "objects": [
+    {
+      "id": 111,
+      "date": "2026-01-10",
+      "pla": "/api/v1/player/485/",
+      "plb": "/api/v1/player/26/",
+      "sca": 3,
+      "scb": 1,
+      "rca": "Z",
+      "rcb": "T",
+      "event": "IEM Katowice 2026 - Final"
+    },
+    {
+      "id": 112,
+      "date": "2025-12-20",
+      "pla": "/api/v1/player/26/",
+      "plb": "/api/v1/player/485/",
+      "sca": 2,
+      "scb": 4,
+      "rca": "T",
+      "rcb": "Z",
+      "event": "DreamHack 2025"
+    },
+    {
+      "id": 113,
+      "date": "2025-11-05",
+      "pla": "/api/v1/player/485/",
+      "plb": "/api/v1/player/26/",
+      "sca": 1,
+      "scb": 3,
+      "rca": "Z",
+      "rcb": "T",
+      "event": "GSL 2025"
+    }
+  ]
+}

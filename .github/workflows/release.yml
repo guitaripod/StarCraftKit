@@ -19,7 +19,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: swift-actions/setup-swift@v2
         with:
-          swift-version: "5.9"
+          swift-version: "6.1"
       - run: swift build -c release --product starcraft-cli
       - run: |
           mkdir -p dist
@@ -36,7 +36,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: |
-          docker run --rm -v "$PWD:/workspace" -w /workspace swift:5.9 \
+          docker run --rm -v "$PWD:/workspace" -w /workspace swift:6.1 \
             swift build -c release --product starcraft-cli
           mkdir -p dist
           cp .build/release/starcraft-cli dist/
@@ -151,8 +151,11 @@ jobs:
           else
             VERSION="${GITHUB_REF#refs/tags/}"
           fi
-          LINUX_SHA256=$(sha256sum artifacts/starcraft-cli-linux/starcraft-cli-linux.tar.gz | cut -d' ' -f1)
-          
+          # The committed PKGBUILD builds from source using the GitHub archive
+          # tarball, so checksum the archive tarball (not the prebuilt binary).
+          SOURCE_URL="https://github.com/guitaripod/StarCraftKit/archive/refs/tags/${VERSION}.tar.gz"
+          SOURCE_SHA256=$(curl -sL "$SOURCE_URL" | sha256sum | cut -d' ' -f1)
+
           # Clone existing AUR package
           if ! git clone ssh://aur@aur.archlinux.org/starcraft-cli.git; then
             echo "❌ Failed to clone AUR package. Please create it first with:"
@@ -160,36 +163,29 @@ jobs:
             echo "Skipping AUR update for this release."
             exit 0
           fi
-          
+
           cd starcraft-cli
-          
-          # Copy updated PKGBUILD from main repo
+
+          # Copy updated PKGBUILD from main repo (source of truth)
           cp ../main-repo/aur/starcraft-cli/PKGBUILD .
-          
-          # Update version and checksum
+
+          # Update version, reset pkgrel, and set the source tarball checksum
           sed -i "s/pkgver=.*/pkgver=${VERSION}/" PKGBUILD
-          sed -i "s/sha256sums=.*/sha256sums=('${LINUX_SHA256}')/" PKGBUILD
-          
-          # Generate .SRCINFO
-          # Since makepkg is not available in Ubuntu runner, create it manually
-          cat > .SRCINFO << EOF
-          pkgbase = starcraft-cli
-          	pkgdesc = Command-line tool for tracking StarCraft 2 esports
-          	pkgver = ${VERSION}
-          	pkgrel = 1
-          	url = https://github.com/guitaripod/StarCraftKit
-          	arch = x86_64
-          	license = MIT
-          	depends = glibc
-          	source = starcraft-cli-${VERSION}.tar.gz::https://github.com/guitaripod/StarCraftKit/releases/download/${VERSION}/starcraft-cli-linux.tar.gz
-          	sha256sums = ${LINUX_SHA256}
-          
-          pkgname = starcraft-cli
-          EOF
-          
+          sed -i "s/pkgrel=.*/pkgrel=1/" PKGBUILD
+          sed -i "s/sha256sums=.*/sha256sums=('${SOURCE_SHA256}')/" PKGBUILD
+
+          # Generate .SRCINFO from the PKGBUILD so the two never drift.
+          # makepkg is unavailable on the Ubuntu runner, so run it in an
+          # Arch container with base-devel against the mounted PKGBUILD.
+          docker run --rm -v "$PWD:/pkg" -w /pkg archlinux:base-devel bash -c '
+            useradd -m builder
+            chown -R builder /pkg
+            su builder -c "makepkg --printsrcinfo" > .SRCINFO
+          '
+
           # Configure git
-          git config user.name "Marcus Ziade"
-          git config user.email "guitaripod@me.com"
+          git config user.name "guitaripod"
+          git config user.email "guitaripod@gmail.com"
           
           # Commit and push
           git add PKGBUILD .SRCINFO

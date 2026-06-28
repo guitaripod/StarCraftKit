@@ -42,6 +42,23 @@ public struct Team: Codable, Sendable, Identifiable {
     }
 }
 
+// MARK: - Defensive Decoding
+public extension Team {
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        let id = try c.decode(Int.self, forKey: .id)
+        self.id = id
+        self.name = (try? c.decodeIfPresent(String.self, forKey: .name)) ?? "Unknown"
+        self.slug = (try? c.decodeIfPresent(String.self, forKey: .slug)) ?? "team-\(id)"
+        self.acronym = try? c.decodeIfPresent(String.self, forKey: .acronym)
+        self.imageURL = try? c.decodeIfPresent(URL.self, forKey: .imageURL)
+        self.location = try? c.decodeIfPresent(String.self, forKey: .location)
+        self.players = try? c.decodeIfPresent([Player].self, forKey: .players)
+        self.currentVideogame = try? c.decodeIfPresent(Videogame.self, forKey: .currentVideogame)
+        self.modifiedAt = try? c.decodeIfPresent(Date.self, forKey: .modifiedAt)
+    }
+}
+
 // MARK: - Computed Properties
 public extension Team {
     /// Display name (acronym or full name)

@@ -229,7 +229,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Check for macOS
         if (platform.includes('mac')) {
-            installCommand = 'brew tap marcusziade/tap && brew install starcraft-cli';
+            installCommand = 'brew tap guitaripod/tap && brew install starcraft-cli';
         }
         
         installCommandEl.textContent = installCommand;

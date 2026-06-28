@@ -1,0 +1,15 @@
+{
+  "id": 3001,
+  "name": "Dark vs Rogue",
+  "slug": "dark-vs-rogue",
+  "status": "finished",
+  "tournament_id": 600,
+  "serie_id": 400,
+  "begin_at": "2026-01-15T18:00:00.123Z",
+  "end_at": "2026-01-15T19:45:30.987Z",
+  "number_of_games": 7,
+  "modified_at": "2026-01-15T19:46:00.500Z",
+  "games": [],
+  "opponents": [],
+  "results": []
+}

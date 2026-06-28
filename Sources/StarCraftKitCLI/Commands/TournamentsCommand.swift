@@ -81,11 +81,11 @@ struct TournamentsCommand: AsyncParsableCommand {
                     print("   Tier: \(tier)")
                 }
                 
-                if tournament.liveSupported {
+                if tournament.liveSupported == true {
                     print("   📡 Live Data Supported")
                 }
-                
-                if tournament.hasBracket {
+
+                if tournament.hasBracket == true {
                     print("   🏆 Has Bracket")
                 }
                 

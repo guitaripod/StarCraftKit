@@ -84,13 +84,16 @@ public struct Player: Codable, Sendable, Identifiable {
     
     /// Player's age
     public let age: Int?
-    
+
     /// Player's birthday
     public let birthday: Date?
-    
+
     /// Player's hometown
     public let hometown: String?
-    
+
+    /// Whether the player is currently active
+    public let active: Bool?
+
     private enum CodingKeys: String, CodingKey {
         case id
         case name
@@ -105,14 +108,37 @@ public struct Player: Codable, Sendable, Identifiable {
         case age
         case birthday
         case hometown
+        case active
     }
 }
 
 /// Videogame information
-public struct Videogame: Codable, Sendable {
+public struct Videogame: Codable, Sendable, Identifiable, Equatable, Hashable {
     public let id: Int
     public let name: String
     public let slug: String
+}
+
+// MARK: - Defensive Decoding
+public extension Player {
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        let id = try c.decode(Int.self, forKey: .id)
+        self.id = id
+        self.name = (try? c.decodeIfPresent(String.self, forKey: .name)) ?? "Unknown"
+        self.slug = (try? c.decodeIfPresent(String.self, forKey: .slug)) ?? "player-\(id)"
+        self.firstName = try? c.decodeIfPresent(String.self, forKey: .firstName)
+        self.lastName = try? c.decodeIfPresent(String.self, forKey: .lastName)
+        self.role = try? c.decodeIfPresent(String.self, forKey: .role)
+        self.nationality = try? c.decodeIfPresent(String.self, forKey: .nationality)
+        self.imageURL = try? c.decodeIfPresent(URL.self, forKey: .imageURL)
+        self.currentTeam = try? c.decodeIfPresent(Team.self, forKey: .currentTeam)
+        self.currentVideogame = try? c.decodeIfPresent(Videogame.self, forKey: .currentVideogame)
+        self.age = try? c.decodeIfPresent(Int.self, forKey: .age)
+        self.birthday = try? c.decodeIfPresent(Date.self, forKey: .birthday)
+        self.hometown = try? c.decodeIfPresent(String.self, forKey: .hometown)
+        self.active = try? c.decodeIfPresent(Bool.self, forKey: .active)
+    }
 }
 
 // MARK: - Computed Properties

@@ -1,4 +1,4 @@
-// swift-tools-version: 5.9
+// swift-tools-version: 6.0
 import PackageDescription
 
 let package = Package(
@@ -30,7 +30,9 @@ let package = Package(
             dependencies: [
                 .product(name: "Logging", package: "swift-log")
             ],
-            swiftSettings: []
+            swiftSettings: [
+                .swiftLanguageMode(.v6)
+            ]
         ),
         .executableTarget(
             name: "StarCraftKitCLI",
@@ -38,18 +40,26 @@ let package = Package(
                 "StarCraftKit",
                 .product(name: "ArgumentParser", package: "swift-argument-parser")
             ],
-            swiftSettings: []
+            swiftSettings: [
+                .swiftLanguageMode(.v6)
+            ]
         ),
         .testTarget(
             name: "StarCraftKitTests",
             dependencies: ["StarCraftKit"],
             resources: [
                 .process("Resources")
+            ],
+            swiftSettings: [
+                .swiftLanguageMode(.v6)
             ]
         ),
         .testTarget(
             name: "StarCraftKitCLITests",
-            dependencies: ["StarCraftKitCLI"]
+            dependencies: ["StarCraftKitCLI"],
+            swiftSettings: [
+                .swiftLanguageMode(.v6)
+            ]
         )
     ]
 )

@@ -49,9 +49,6 @@ import Foundation
 ///
 /// ### Server Errors
 /// - ``serverError(statusCode:message:)``
-///
-/// ### Real-time Errors
-/// - ``webSocketError(reason:)``
 public enum APIError: LocalizedError, Sendable {
     /// Network connectivity issues
     case networkError(underlying: Error)
@@ -82,13 +79,10 @@ public enum APIError: LocalizedError, Sendable {
     
     /// Timeout
     case timeout
-    
+
     /// Cache error
     case cacheError(underlying: Error)
-    
-    /// WebSocket errors
-    case webSocketError(reason: String)
-    
+
     public var errorDescription: String? {
         switch self {
         case .networkError(let error):
@@ -120,8 +114,6 @@ public enum APIError: LocalizedError, Sendable {
             return "Request timed out"
         case .cacheError(let error):
             return "Cache error: \(error.localizedDescription)"
-        case .webSocketError(let reason):
-            return "WebSocket error: \(reason)"
         }
     }
     

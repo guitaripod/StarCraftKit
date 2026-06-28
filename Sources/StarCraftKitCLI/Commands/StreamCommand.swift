@@ -54,15 +54,15 @@ struct StreamCommand: AsyncParsableCommand {
     
     private func handleSpecificMatch(_ matchID: Int, client: StarCraftClient) async throws {
         print("🔍 Looking for streams for match \(matchID)...".gray)
-        
-        // Get the specific match
-        // For now, we need to get all matches and filter
-        let allMatches = try await client.getMatches(MatchesRequest(endpoint: .all, pageSize: 100))
-        guard let match = allMatches.first(where: { $0.id == matchID }) else {
+
+        let match: Match
+        do {
+            match = try await client.getMatch(id: matchID)
+        } catch {
             print("❌ Match not found".red)
             return
         }
-        
+
         guard let streams = match.streams, !streams.isEmpty else {
             print("❌ No streams available for this match".red)
             return
@@ -189,9 +189,10 @@ struct StreamCommand: AsyncParsableCommand {
                 continue
             }
             
-            let platform = detectPlatform(from: stream.rawURL.absoluteString)
+            let streamURL = stream.rawURL?.absoluteString ?? ""
+            let platform = detectPlatform(from: streamURL)
             print("    \(platform)\(languageInfo)\(officialBadge)\(mainBadge)")
-            print("    \(stream.rawURL.absoluteString)".gray)
+            print("    \(streamURL)".gray)
         }
     }
     
@@ -208,7 +209,10 @@ struct StreamCommand: AsyncParsableCommand {
     }
     
     private func openStream(_ stream: StarCraftKit.Stream) throws {
-        let url = stream.rawURL.absoluteString
+        guard let url = stream.rawURL?.absoluteString else {
+            print("\n❌ No stream URL available".red)
+            return
+        }
         print("\n🚀 Opening stream: \(url)".green)
         
         #if os(macOS)

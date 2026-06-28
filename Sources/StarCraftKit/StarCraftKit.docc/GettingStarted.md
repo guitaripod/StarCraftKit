@@ -10,7 +10,7 @@ Add StarCraftKit to your `Package.swift` file:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/yourusername/StarCraftKit.git", from: "1.0.0")
+    .package(url: "https://github.com/guitaripod/StarCraftKit.git", from: "2.0.0")
 ]
 ```
 
@@ -26,7 +26,7 @@ Then add it to your target dependencies:
 ### Xcode
 
 1. In Xcode, select **File → Add Package Dependencies...**
-2. Enter the repository URL: `https://github.com/yourusername/StarCraftKit.git`
+2. Enter the repository URL: `https://github.com/guitaripod/StarCraftKit.git`
 3. Select the version you want to use
 4. Add StarCraftKit to your target
 
@@ -76,8 +76,26 @@ let token = ProcessInfo.processInfo.environment["PANDA_TOKEN"] ?? ""
 let client = StarCraftClient(apiToken: token)
 ```
 
+## Ratings & Predictions (Aligulac)
+
+For skill ratings, race-matchup performance, head-to-head records, and match
+predictions that PandaScore doesn't provide, add the optional ``AligulacClient``. It
+needs its own free API key (register at <https://aligulac.com/about/api/>):
+
+```swift
+let aligulac = AligulacClient(apiKey: "your-aligulac-key")
+if let serral = try await aligulac.searchPlayers(tag: "Serral").first,
+   let rating = try await aligulac.rating(playerID: serral.id) {
+    print("vs Zerg: \(rating.ratingVsZerg ?? 0)")
+}
+```
+
+Aligulac data is licensed for non-commercial use **with attribution** — display
+`AligulacClient.attribution` ("Rating data from aligulac.com") wherever you show it.
+
 ## Next Steps
 
 - Learn about <doc:Authentication> and API token management
 - Explore <doc:BasicRequests> to fetch different types of data
+- Build advanced queries with <doc:QueryingData>
 - Understand <doc:ErrorHandling> for robust applications

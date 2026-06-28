@@ -28,7 +28,7 @@ public struct RetryConfiguration: Sendable {
         backoffMultiplier: Double = 2.0,
         jitterRange: ClosedRange<Double> = 0.8...1.2
     ) {
-        self.maxAttempts = maxAttempts
+        self.maxAttempts = max(1, maxAttempts)
         self.initialDelay = initialDelay
         self.maxDelay = maxDelay
         self.backoffMultiplier = backoffMultiplier
@@ -56,7 +56,7 @@ public struct RetryConfiguration: Sendable {
 }
 
 /// Handles retry logic with exponential backoff
-public struct RetryHandler {
+public struct RetryHandler: Sendable {
     private let configuration: RetryConfiguration
     private let logger: Logger
     
@@ -106,34 +106,33 @@ public struct RetryHandler {
     }
     
     private func calculateDelay(for attempt: Int, error: Error) -> TimeInterval {
-        var delay: TimeInterval
-        
-        if let apiError = error as? APIError,
-           let suggestedDelay = apiError.suggestedRetryDelay {
-            delay = suggestedDelay
-        } else {
-            delay = configuration.initialDelay * pow(configuration.backoffMultiplier, Double(attempt))
+        let apiError = error as? APIError
+
+        // A server-mandated Retry-After (HTTP 429) is authoritative: honor it as a
+        // hard floor, without capping below it or jittering it downward.
+        if let apiError, case let .rateLimitExceeded(retryAfter, _) = apiError, let retryAfter {
+            return retryAfter
         }
-        
+
+        // For other retryable errors, use the suggested delay as the BASE of the
+        // exponential backoff so the wait actually grows with each attempt.
+        let base = apiError?.suggestedRetryDelay ?? configuration.initialDelay
+        var delay = base * pow(configuration.backoffMultiplier, Double(attempt))
         delay = min(delay, configuration.maxDelay)
-        
-        let jitter = Double.random(in: configuration.jitterRange)
-        delay *= jitter
-        
+        delay *= Double.random(in: configuration.jitterRange)
         return delay
     }
 }
 
-/// Extension to make retry handler work with APIRequest
+/// Extension to make retry handler work with the networking client.
 public extension RetryHandler {
-    func executeRequest<T: Decodable>(
+    /// Send a request through the retry policy, returning the validated raw response.
+    func send(
         client: NetworkingClient,
-        request: URLRequest,
-        responseType: T.Type,
-        decoder: JSONDecoder = JSONDecoder()
-    ) async throws -> (data: T, headers: [String: String]) {
+        request: URLRequest
+    ) async throws -> (data: Data, headers: [String: String]) {
         try await execute {
-            try await client.execute(request, responseType: responseType, decoder: decoder)
+            try await client.send(request)
         }
     }
 }

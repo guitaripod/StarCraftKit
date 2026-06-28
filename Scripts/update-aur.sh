@@ -19,7 +19,7 @@ echo "🚀 Updating AUR package to version $VERSION"
 
 # Get the source tarball checksum
 echo "📦 Getting checksum for source tarball..."
-CHECKSUM=$(curl -sL "https://github.com/marcusziade/StarCraftKit/archive/refs/tags/$VERSION.tar.gz" | sha256sum | cut -d' ' -f1)
+CHECKSUM=$(curl -sL "https://github.com/guitaripod/StarCraftKit/archive/refs/tags/$VERSION.tar.gz" | sha256sum | cut -d' ' -f1)
 echo "✅ Checksum: $CHECKSUM"
 
 # Update PKGBUILD

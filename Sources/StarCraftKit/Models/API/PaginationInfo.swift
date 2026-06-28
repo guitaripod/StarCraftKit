@@ -16,7 +16,8 @@ public struct PaginationInfo: Sendable {
     
     /// Total number of pages
     public var totalPages: Int {
-        Int(ceil(Double(total) / Double(perPage)))
+        guard perPage > 0 else { return 0 }
+        return Int(ceil(Double(total) / Double(perPage)))
     }
     
     /// Check if there's a next page
@@ -69,19 +70,23 @@ public struct NavigationLinks: Sendable {
 
 /// Extension to extract pagination info from headers
 public extension PaginationInfo {
+    /// Build from response headers. Header keys are matched case-insensitively
+    /// because `HTTPURLResponse.allHeaderFields` casing is not guaranteed across
+    /// platforms (notably swift-corelibs-foundation on Linux).
     init?(from headers: [String: String]) {
-        guard let pageStr = headers["X-Page"],
+        let lower = headers.reduce(into: [String: String]()) { $0[$1.key.lowercased()] = $1.value }
+        guard let pageStr = lower["x-page"],
               let page = Int(pageStr),
-              let perPageStr = headers["X-Per-Page"],
-              let perPage = Int(perPageStr),
-              let totalStr = headers["X-Total"],
+              let perPageStr = lower["x-per-page"],
+              let perPage = Int(perPageStr), perPage > 0,
+              let totalStr = lower["x-total"],
               let total = Int(totalStr) else {
             return nil
         }
-        
+
         self.page = page
         self.perPage = perPage
         self.total = total
-        self.links = NavigationLinks(from: headers["Link"])
+        self.links = NavigationLinks(from: lower["link"])
     }
 }

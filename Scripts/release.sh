@@ -42,7 +42,7 @@ echo "🔍 Checking for release availability..."
 MAX_ATTEMPTS=30
 ATTEMPT=0
 while [ $ATTEMPT -lt $MAX_ATTEMPTS ]; do
-    if curl -s -f -I "https://github.com/marcusziade/StarCraftKit/archive/refs/tags/$VERSION.tar.gz" > /dev/null 2>&1; then
+    if curl -s -f -I "https://github.com/guitaripod/StarCraftKit/archive/refs/tags/$VERSION.tar.gz" > /dev/null 2>&1; then
         echo "✅ Release is available!"
         break
     fi

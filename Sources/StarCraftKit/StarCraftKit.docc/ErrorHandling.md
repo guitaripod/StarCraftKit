@@ -118,31 +118,27 @@ let client = StarCraftClient(configuration: config)
 
 ### Manual Retry Logic
 
+`APIError` already tells you whether it is worth retrying via `isRetryable` and
+`suggestedRetryDelay`, so manual retry logic stays small:
+
 ```swift
-func fetchWithRetry<T>(_ operation: () async throws -> T, 
-                      maxAttempts: Int = 3) async throws -> T {
+func fetchWithRetry<T>(_ operation: () async throws -> T,
+                       maxAttempts: Int = 3) async throws -> T {
     var lastError: Error?
-    
+
     for attempt in 1...maxAttempts {
         do {
             return try await operation()
-        } catch APIError.rateLimitExceeded(let retryAfter, _) {
-            // Wait for rate limit reset
-            if let retryAfter = retryAfter {
-                try await Task.sleep(nanoseconds: UInt64(retryAfter * 1_000_000_000))
-            }
+        } catch let error as APIError where error.isRetryable {
             lastError = error
-        } catch APIError.serverError {
-            // Exponential backoff for server errors
-            let delay = Double(attempt) * 2.0
+            let delay = error.suggestedRetryDelay ?? Double(attempt) * 2.0
             try await Task.sleep(nanoseconds: UInt64(delay * 1_000_000_000))
-            lastError = error
         } catch {
-            // Don't retry other errors
+            // Don't retry non-retryable errors
             throw error
         }
     }
-    
+
     throw lastError ?? APIError.invalidRequest(reason: "Max retries exceeded")
 }
 
@@ -151,6 +147,9 @@ let matches = try await fetchWithRetry {
     try await client.getLiveMatches()
 }
 ```
+
+> The client already retries retryable errors automatically; this pattern is only
+> needed when you want custom retry behavior on top of a sequence of calls.
 
 ## Error Recovery
 
