@@ -1,0 +1,22 @@
+{
+  "ladderTeams": [
+    {
+      "teamMembers": [
+        {
+          "id": "123",
+          "realm": 1,
+          "region": 2,
+          "displayName": "Player",
+          "clanTag": "ABC",
+          "favoriteRace": "zerg"
+        }
+      ],
+      "previousRank": 4,
+      "points": 1200,
+      "mmr": 6500,
+      "wins": 50,
+      "losses": 40,
+      "joinTimestamp": 1700000000000
+    }
+  ]
+}

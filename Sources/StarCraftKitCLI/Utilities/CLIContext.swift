@@ -31,6 +31,22 @@ struct CLIContext {
         }
         return AligulacClient(apiKey: aligulacKey)
     }
+
+    /// Build the unified `StarCraft` facade from whatever credentials are present.
+    ///
+    /// SC2 Pulse (ladder/streams) always works with no key; `PANDA_TOKEN` unlocks the
+    /// pro scene and `ALIGULAC_TOKEN` unlocks ratings/predictions.
+    static func makeStarCraft() -> StarCraft {
+        let env = ProcessInfo.processInfo.environment
+        let panda = env["PANDA_TOKEN"].flatMap { $0.isEmpty ? nil : $0 }
+        let aligulac = env["ALIGULAC_TOKEN"].flatMap { $0.isEmpty ? nil : $0 }
+        var blizzard: BlizzardCredentials?
+        if let id = env["BLIZZARD_CLIENT_ID"], let secret = env["BLIZZARD_CLIENT_SECRET"],
+           !id.isEmpty, !secret.isEmpty {
+            blizzard = BlizzardCredentials(clientId: id, clientSecret: secret)
+        }
+        return StarCraft(pandaScoreToken: panda, aligulacKey: aligulac, blizzardCredentials: blizzard)
+    }
 }
 
 // MARK: - CLI Errors

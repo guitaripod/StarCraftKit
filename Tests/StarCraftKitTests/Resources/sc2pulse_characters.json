@@ -1,0 +1,136 @@
+[
+ {
+  "leagueMax": 6,
+  "ratingMax": 6819,
+  "totalGamesPlayed": 756,
+  "previousStats": {
+   "rating": 6670,
+   "gamesPlayed": 3,
+   "rank": 9
+  },
+  "currentStats": {
+   "rating": 6653,
+   "gamesPlayed": 7,
+   "rank": 59
+  },
+  "members": {
+   "terranGamesPlayed": 721,
+   "protossGamesPlayed": 35,
+   "character": {
+    "realm": 1,
+    "name": "llllllllllll#22284",
+    "id": 341364927,
+    "accountId": 208715433,
+    "region": "EU",
+    "battlenetId": 11170716,
+    "tag": "llllllllllll",
+    "discriminator": 22284
+   },
+   "account": {
+    "battleTag": "\ub9c8\ub8e8#33783",
+    "id": 208715433,
+    "partition": "GLOBAL",
+    "hidden": null,
+    "tag": "\ub9c8\ub8e8",
+    "discriminator": 33783
+   },
+   "proId": 11,
+   "proNickname": "Maru",
+   "proTeam": "ONSYDE",
+   "proPlayer": {
+    "proPlayer": {
+     "id": 11,
+     "aligulacId": null,
+     "nickname": "Maru",
+     "name": null,
+     "country": null,
+     "birthday": null,
+     "earnings": null,
+     "updated": null,
+     "version": null
+    },
+    "proTeam": {
+     "name": null,
+     "shortName": "ONSYDE",
+     "id": null,
+     "aligulacId": null,
+     "updated": null
+    },
+    "links": []
+   },
+   "raceGames": {
+    "TERRAN": 721,
+    "PROTOSS": 35
+   }
+  }
+ },
+ {
+  "leagueMax": 6,
+  "ratingMax": 7148,
+  "totalGamesPlayed": 2463,
+  "previousStats": {
+   "rating": 5765,
+   "gamesPlayed": 1,
+   "rank": 249
+  },
+  "currentStats": {
+   "rating": 5654,
+   "gamesPlayed": 1,
+   "rank": 299
+  },
+  "members": {
+   "terranGamesPlayed": 930,
+   "protossGamesPlayed": 517,
+   "zergGamesPlayed": 971,
+   "randomGamesPlayed": 45,
+   "character": {
+    "realm": 1,
+    "name": "llllllllllll#20223",
+    "id": 1341918,
+    "accountId": 1341918,
+    "region": "KR",
+    "battlenetId": 4582362,
+    "tag": "llllllllllll",
+    "discriminator": 20223
+   },
+   "account": {
+    "battleTag": "\ub9c8\ub8e8#32431",
+    "id": 1341918,
+    "partition": "GLOBAL",
+    "hidden": null,
+    "tag": "\ub9c8\ub8e8",
+    "discriminator": 32431
+   },
+   "proId": 11,
+   "proNickname": "Maru",
+   "proTeam": "ONSYDE",
+   "proPlayer": {
+    "proPlayer": {
+     "id": 11,
+     "aligulacId": null,
+     "nickname": "Maru",
+     "name": null,
+     "country": null,
+     "birthday": null,
+     "earnings": null,
+     "updated": null,
+     "version": null
+    },
+    "proTeam": {
+     "name": null,
+     "shortName": "ONSYDE",
+     "id": null,
+     "aligulacId": null,
+     "updated": null
+    },
+    "links": []
+   },
+   "raceGames": {
+    "ZERG": 971,
+    "TERRAN": 930,
+    "PROTOSS": 517,
+    "RANDOM": 45
+   }
+  }
+ }
+]

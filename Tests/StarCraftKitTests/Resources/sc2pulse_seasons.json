@@ -1,0 +1,56 @@
+[
+ {
+  "number": 2,
+  "year": 2026,
+  "start": "2026-03-31T15:00:00Z",
+  "end": "2026-07-20T06:00:00Z",
+  "id": 143822,
+  "battlenetId": 67,
+  "region": "KR"
+ },
+ {
+  "number": 2,
+  "year": 2026,
+  "start": "2026-04-01T00:00:00Z",
+  "end": "2026-07-19T06:00:00Z",
+  "id": 143823,
+  "battlenetId": 67,
+  "region": "EU"
+ },
+ {
+  "number": 2,
+  "year": 2026,
+  "start": "2026-04-01T07:00:00Z",
+  "end": "2026-07-19T06:00:00Z",
+  "id": 143824,
+  "battlenetId": 67,
+  "region": "US"
+ },
+ {
+  "number": 1,
+  "year": 2026,
+  "start": "2026-01-04T15:00:00Z",
+  "end": "2026-03-31T15:00:00Z",
+  "id": 143819,
+  "battlenetId": 66,
+  "region": "KR"
+ },
+ {
+  "number": 1,
+  "year": 2026,
+  "start": "2026-01-05T00:00:00Z",
+  "end": "2026-04-01T00:00:00Z",
+  "id": 143820,
+  "battlenetId": 66,
+  "region": "EU"
+ },
+ {
+  "number": 1,
+  "year": 2026,
+  "start": "2026-01-05T08:00:00Z",
+  "end": "2026-04-01T07:00:00Z",
+  "id": 143821,
+  "battlenetId": 66,
+  "region": "US"
+ }
+]

@@ -115,6 +115,15 @@ struct StarCraftCLI: AsyncParsableCommand {
             TournamentMatchesCommand.self,
             TournamentsCommand.self,
             
+            // Unified — aggregated across all sources
+            ProfileCommand.self,
+            SceneCommand.self,
+            LadderCommand.self,
+            MatchupCommand.self,
+            CommunityStreamsCommand.self,
+            SeasonsCommand.self,
+            PatchesCommand.self,
+
             // Search
             SearchCommand.self,
 

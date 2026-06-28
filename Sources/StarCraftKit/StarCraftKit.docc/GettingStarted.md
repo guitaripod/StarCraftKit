@@ -38,19 +38,38 @@ Then add it to your target dependencies:
 import StarCraftKit
 ```
 
-### Initialize the Client
+### Start with the unified facade
 
-Create an instance of ``StarCraftClient`` with your PandaScore API token:
+The entry point is ``StarCraft``. SC2 Pulse is free and needs no key, so a bare
+`StarCraft()` already powers the ladder, live community streams, and player identity:
+
+```swift
+let sc = StarCraft()
+
+let ladder = try await sc.topLadder(region: .eu, race: .zerg)
+let scene  = try await sc.liveScene()
+let serral = try await sc.profile(of: "Serral")
+```
+
+Add credentials to unlock more sources — every argument is optional:
+
+```swift
+let sc = StarCraft(
+    pandaScoreToken: "your-pandascore-token",   // pro scene
+    aligulacKey: "your-aligulac-key"            // ratings & predictions
+)
+```
+
+See <doc:UnifiedAPI> for the full facade and its composite interfaces.
+
+### Or use a source client directly
+
+For the full PandaScore surface, create a ``StarCraftClient`` with your token and fetch
+current live matches:
 
 ```swift
 let client = StarCraftClient(apiToken: "your-api-token")
-```
 
-### Make Your First Request
-
-Fetch current live matches:
-
-```swift
 do {
     let matches = try await client.getLiveMatches()
     for match in matches {
@@ -95,6 +114,7 @@ Aligulac data is licensed for non-commercial use **with attribution** — displa
 
 ## Next Steps
 
+- Aggregate every source with the <doc:UnifiedAPI> facade
 - Learn about <doc:Authentication> and API token management
 - Explore <doc:BasicRequests> to fetch different types of data
 - Build advanced queries with <doc:QueryingData>

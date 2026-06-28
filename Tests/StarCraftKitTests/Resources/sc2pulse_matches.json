@@ -1,0 +1,39 @@
+{
+ "result": [
+  {
+   "match": {
+    "date": "2026-06-28T08:21:25Z",
+    "type": "_1V1",
+    "id": 622590476,
+    "mapId": 55372,
+    "region": "EU",
+    "updated": "2026-06-28T08:27:24.715856Z",
+    "duration": null
+   },
+   "map": {
+    "id": 55372,
+    "name": "Rainfall LE"
+   },
+   "participants": [
+    {
+     "participant": {
+      "matchId": 622590476,
+      "playerCharacterId": 11298817,
+      "teamId": null,
+      "teamStateDateTime": null,
+      "decision": "LOSS",
+      "ratingChange": null
+     },
+     "team": null,
+     "teamState": null,
+     "twitchVodUrl": null,
+     "subOnlyTwitchVod": null
+    }
+   ]
+  }
+ ],
+ "navigation": {
+  "before": null,
+  "after": "eyJ2IjoxLCJhIjpbIjIwMjYtMDYtMjhUMDg6MDM6MDRaIiwxLDU1Mzc2LDJdfQ"
+ }
+}
